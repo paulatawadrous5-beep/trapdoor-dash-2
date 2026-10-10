@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Trapdoor Dash 2</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- CHARACTER SELECT SCREEN -->
+  <div id="characterSelect" class="screen">
+    <h1 class="title">TRAPDOOR DASH <span class="two">2</span></h1>
+    <p class="subtitle">10 new levels. More devils. Pick your runner</p>
+    <div id="charGrid" class="char-grid">
+      <button class="char-card" data-char="0">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Marley</span>
+      </button>
+      <button class="char-card" data-char="1">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Miral</span>
+      </button>
+      <button class="char-card" data-char="2">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">John</span>
+      </button>
+      <button class="char-card" data-char="3">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Paul</span>
+      </button>
+      <button class="char-card" data-char="4">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Marmar</span>
+      </button>
+      <button class="char-card" data-char="5">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Miko</span>
+      </button>
+      <button class="char-card" data-char="6">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Mariam</span>
+      </button>
+      <button class="char-card new-char" data-char="7">
+        <div class="char-avatar" data-part="body"><div class="char-avatar-eye"></div><div class="char-avatar-eye"></div></div>
+        <span class="char-name">Gloria <em>NEW</em></span>
+      </button>
+    </div>
+    <button id="startBtn" class="primary-btn" disabled>SELECT A CHARACTER</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="gameScreen" class="screen hidden">
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="hud">
+      <div id="hudLevel">Level 1</div>
+      <div id="hudTries">Tries: 1</div>
+    </div>
+
+    <button id="muteBtn" aria-label="Mute">🔊</button>
+    <button id="pauseBtn" aria-label="Pause">⏸</button>
+
+    <div id="touchControls">
+      <div id="moveControls">
+        <button id="btnLeft" class="touch-btn move-btn" aria-label="Left">◀</button>
+        <button id="btnRight" class="touch-btn move-btn" aria-label="Right">▶</button>
+      </div>
+      <button id="btnJump" class="touch-btn jump-btn" aria-label="Jump">JUMP</button>
+    </div>
+
+    <div id="readyOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2 id="readyTitle">Level 1</h2>
+        <p id="readySub">Don't look back...</p>
+      </div>
+    </div>
+
+    <div id="levelCompleteOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>Level Complete!</h2>
+        <p id="lcTries"></p>
+        <button id="nextLevelBtn" class="primary-btn">NEXT LEVEL</button>
+      </div>
+    </div>
+
+    <div id="gameCompleteOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>You beat the devils!</h2>
+        <p>10 levels of traps, saws and chasers — legend.</p>
+        <button id="backToMenuBtn" class="primary-btn">CHARACTER SELECT</button>
+      </div>
+    </div>
+
+    <div id="pauseOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>Paused</h2>
+        <button id="resumeBtn" class="primary-btn">RESUME</button>
+        <button id="restartBtn" class="secondary-btn">RESTART LEVEL</button>
+        <button id="menuBtn" class="secondary-btn">CHARACTER SELECT</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="game.js"></script>
+</body>
+</html>

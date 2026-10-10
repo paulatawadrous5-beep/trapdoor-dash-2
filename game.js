@@ -47,16 +47,43 @@
       o.start(t);
       o.stop(t + dur + 0.02);
     },
-    jump: function () { this.tone(280, 0.14, "square", 0.10, 640); },
-    death: function () { this.tone(220, 0.35, "sawtooth", 0.16, 50); },
+    jump: function () { this.tone(280, 0.14, "square", 0.14, 640); },
+    death: function () { this.tone(220, 0.35, "sawtooth", 0.20, 50); },
     win: function () {
       var s = this;
-      [523, 659, 784, 1047].forEach(function (f, i) { s.tone(f, 0.16, "square", 0.10, 0, i * 0.1); });
+      [523, 659, 784, 1047].forEach(function (f, i) { s.tone(f, 0.16, "square", 0.12, 0, i * 0.1); });
     },
-    warn: function () { this.tone(920, 0.06, "square", 0.06); },
+    warn: function () { this.tone(920, 0.06, "square", 0.09); },
     click: function () { this.tone(620, 0.05, "square", 0.08); },
-    spawn: function () { this.tone(150, 0.4, "sawtooth", 0.14, 80); },
+    spawn: function () { this.tone(150, 0.4, "sawtooth", 0.16, 80); },
     fake: function () { this.tone(180, 0.25, "square", 0.14, 90); }
+  };
+
+  /* Background music: tiny procedural chiptune loop (no files) */
+  Sound.music = {
+    playing: false,
+    timer: null,
+    step: 0,
+    notes: [110, 110, 130.81, 110, 164.81, 146.83, 130.81, 98],
+    start: function () {
+      if (this.playing) return;
+      this.playing = true;
+      this.step = 0;
+      var self = this;
+      var tick = function () {
+        if (!self.playing || Sound.muted || !Sound.ctx) { self.playing = false; return; }
+        var f = self.notes[self.step % self.notes.length];
+        Sound.tone(f, 0.22, "triangle", 0.11);
+        if (self.step % 2 === 0) Sound.tone(f * 4, 0.1, "square", 0.03);
+        self.step++;
+        self.timer = setTimeout(tick, 235);
+      };
+      tick();
+    },
+    stop: function () {
+      this.playing = false;
+      if (this.timer) { clearTimeout(this.timer); this.timer = null; }
+    }
   };
 
   /* =========================================================
@@ -116,6 +143,7 @@
 
   backToMenuBtn.addEventListener("click", function () {
     Sound.click();
+    Sound.music.stop();
     gameCompleteOverlay.classList.add("hidden");
     gameScreen.classList.add("hidden");
     characterSelect.classList.remove("hidden");
@@ -123,6 +151,7 @@
 
   menuBtn.addEventListener("click", function () {
     Sound.click();
+    Sound.music.stop();
     paused = false;
     pauseOverlay.classList.add("hidden");
     gameScreen.classList.add("hidden");
@@ -133,7 +162,12 @@
     Sound.init();
     Sound.muted = !Sound.muted;
     muteBtn.textContent = Sound.muted ? "🔇" : "🔊";
-    if (!Sound.muted) Sound.click();
+    if (!Sound.muted) {
+      Sound.click();
+      if (levelActive && !paused) Sound.music.start();
+    } else {
+      Sound.music.stop();
+    }
   });
 
   /* =========================================================
@@ -145,6 +179,8 @@
   if (isTouchDevice()) {
     document.body.classList.add("touch-mode");
   }
+  // On touch screens shift the world up so the buttons don't cover the runner
+  var YOFF = isTouchDevice() ? 90 : 0;
 
   /* =========================================================
      CANVAS / RESIZE
@@ -206,11 +242,13 @@
     Sound.click();
     paused = !paused;
     pauseOverlay.classList.toggle("hidden", !paused);
+    if (paused) Sound.music.stop(); else Sound.music.start();
   });
   resumeBtn.addEventListener("click", function () {
     Sound.click();
     paused = false;
     pauseOverlay.classList.add("hidden");
+    Sound.music.start();
   });
   restartBtn.addEventListener("click", function () {
     Sound.click();
@@ -724,6 +762,7 @@
     pauseOverlay.classList.add("hidden");
     showReady(level.name);
     lastTime = performance.now();
+    Sound.music.start();
     requestAnimationFrame(loop);
   }
 
@@ -794,6 +833,7 @@
   function completeLevel() {
     levelActive = false;
     Sound.win();
+    Sound.music.stop();
     lcTries.textContent = "Finished in " + tries + " " + (tries === 1 ? "try" : "tries");
     levelCompleteOverlay.classList.remove("hidden");
   }
@@ -1085,7 +1125,7 @@
 
     ctx.save();
     ctx.scale(SCALE, SCALE);
-    ctx.translate(-camera.x, -camera.y);
+    ctx.translate(-camera.x, -camera.y - YOFF);
 
     // platforms
     level.platforms.forEach(function (p) { drawRect(p, level.platform); });

@@ -238,7 +238,7 @@ html, body {
   display: none;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 18px calc(env(safe-area-inset-bottom, 0px) + 22px) 18px;
+  padding: 0 14px calc(env(safe-area-inset-bottom, 0px) + 8px) 14px;
   pointer-events: none;
   z-index: 5;
 }
@@ -256,13 +256,13 @@ body.touch-mode #touchControls {
 .touch-btn {
   border: none;
   border-radius: 50%;
-  background: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.13);
   color: #ffffff;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.35);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.25);
   backdrop-filter: blur(2px);
 }
 
@@ -272,15 +272,15 @@ body.touch-mode #touchControls {
 }
 
 .move-btn {
-  width: 74px;
-  height: 74px;
-  font-size: 30px;
+  width: 62px;
+  height: 62px;
+  font-size: 24px;
 }
 
 .jump-btn {
-  width: 96px;
-  height: 96px;
-  font-size: 16px;
+  width: 82px;
+  height: 82px;
+  font-size: 14px;
   letter-spacing: 1px;
   pointer-events: auto;
 }

@@ -1,0 +1,328 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0d0a0f;
+  font-family: 'Trebuchet MS', 'Segoe UI', Verdana, sans-serif;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- CHARACTER SELECT ---------- */
+#characterSelect {
+  background: linear-gradient(180deg, #2a0f14 0%, #0d0a0f 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+}
+
+.title {
+  color: #ffffff;
+  font-size: clamp(28px, 7vw, 54px);
+  letter-spacing: 4px;
+  font-weight: 900;
+  text-shadow: 0 4px 0 rgba(0,0,0,0.4), 0 0 30px rgba(255,60,60,0.35);
+}
+
+.title .two {
+  color: #ff3b3b;
+}
+
+.subtitle {
+  color: #c98a8a;
+  font-size: clamp(13px, 2.4vw, 18px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(80px, 120px));
+  gap: 12px;
+  max-width: 560px;
+  width: 100%;
+  justify-content: center;
+}
+
+.char-card {
+  background: #231a20;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.char-card:active { transform: scale(0.95); }
+
+.char-card.selected {
+  border-color: #ff3b3b;
+  background: #2e2229;
+}
+
+.char-card.new-char {
+  border-color: rgba(0, 229, 160, 0.55);
+}
+
+.char-card.new-char.selected {
+  border-color: #00e5a0;
+}
+
+.char-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: inset 0 -5px 0 rgba(0,0,0,0.15);
+}
+
+.char-avatar-eye {
+  width: 7px;
+  height: 7px;
+  background: #171a21;
+  border-radius: 50%;
+}
+
+.char-card[data-char="0"] .char-avatar { background: #ff5d5d; }
+.char-card[data-char="1"] .char-avatar { background: #4ec9ff; }
+.char-card[data-char="2"] .char-avatar { background: #7ee08a; }
+.char-card[data-char="3"] .char-avatar { background: #ffd23f; }
+.char-card[data-char="4"] .char-avatar { background: #ff8fd8; }
+.char-card[data-char="5"] .char-avatar { background: #b98cff; }
+.char-card[data-char="6"] .char-avatar { background: #ffb26b; }
+.char-card[data-char="7"] .char-avatar { background: #00e5a0; }
+
+.char-name {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.char-name em {
+  font-style: normal;
+  font-size: 10px;
+  color: #00e5a0;
+  margin-left: 4px;
+  vertical-align: super;
+}
+
+.primary-btn {
+  background: #ff3b3b;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 16px 32px;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #a11f1f;
+  transition: transform 0.08s ease;
+}
+
+.primary-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #a11f1f; }
+
+.primary-btn:disabled {
+  background: #4a4f5c;
+  color: #8a8f9c;
+  box-shadow: 0 6px 0 #34383f;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #4a4f5c;
+  border-radius: 14px;
+  padding: 13px 30px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* ---------- GAME SCREEN ---------- */
+#gameScreen { background: #000; }
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#hud {
+  position: absolute;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+  pointer-events: none;
+}
+
+#hudLevel, #hudTries {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: clamp(13px, 2.4vw, 18px);
+  background: rgba(0,0,0,0.35);
+  padding: 8px 14px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+#pauseBtn, #muteBtn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 60px);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#pauseBtn { right: 14px; }
+#muteBtn { right: 62px; }
+
+/* ---------- TOUCH CONTROLS ---------- */
+#touchControls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 18px calc(env(safe-area-inset-bottom, 0px) + 22px) 18px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+body.touch-mode #touchControls {
+  display: flex;
+}
+
+#moveControls {
+  display: flex;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.touch-btn {
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.35);
+  backdrop-filter: blur(2px);
+}
+
+.touch-btn:active {
+  background: rgba(255,255,255,0.4);
+  transform: translateY(3px);
+}
+
+.move-btn {
+  width: 74px;
+  height: 74px;
+  font-size: 30px;
+}
+
+.jump-btn {
+  width: 96px;
+  height: 96px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  pointer-events: auto;
+}
+
+/* ---------- OVERLAYS ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 6, 8, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.overlay-card {
+  background: #241a1e;
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  max-width: 90vw;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  border: 1px solid rgba(255,59,59,0.25);
+}
+
+.overlay-card h2 {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.overlay-card p {
+  color: #c9a9a9;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+@media (orientation: portrait) and (max-width: 600px) {
+  .title { font-size: 32px; }
+  .char-grid { grid-template-columns: repeat(4, minmax(70px, 1fr)); }
+}
